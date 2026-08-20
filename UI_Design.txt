@@ -1,0 +1,164 @@
+🌿 Overall Design Philosophy
+Minimalist Aesthetic: Avoid clutter; prioritize whitespace and clean lines.
+
+Medical Professional Theme: Soft whites, light greys, and medical blues/greens. Gentle shadows and subtle gradients to give depth.
+
+Mobile-First: All views should adapt gracefully to screens < 480px wide.
+
+Accessibility First: Clear contrast, readable font sizes, large touch targets.
+
+🏠 Home Page / Dashboard
+Purpose:
+Quick access to core functions: AI Diagnosis, Question Answering, Content Generator, and History.
+
+UI Elements:
+Header with App Logo + Avatar (shows email or initials; tap to log out).
+
+Main Sections as Cards:
+
+“🔍 Start New Diagnosis”
+
+“❓ Ask Clinical Question”
+
+
+
+“📜 History”
+
+Each card:
+
+Subtle hover animation.
+
+Icon + Title + 1-line description.
+
+Tap opens corresponding feature.
+
+🤖 AI Diagnosis Page (Mobile Layout)
+Top Bar:
+Back arrow + Page title: “AI Diagnosis”
+
+Option to “New Case”
+
+Input Section:
+Textarea for Patient History (placeholder="Describe the symptoms, history, findings...")
+
+Upload Button (for PDF/Image) with preview thumbnails (with delete option)
+
+Paste-from-Clipboard image support
+
+Action Button:
+🧠 “Generate Diagnosis” (Large, full-width, fixed at bottom when scrolled)
+
+Results Section:
+(Shown after AI output)
+
+Each Diagnosis Card:
+
+Title (e.g., “Iron Deficiency Anemia”)
+
+Confidence: Progress bar or badge (e.g., 78%)
+
+Reasoning: Expand/collapse
+
+Suggested Tests/Missing Info: Shown as chips or bullet list
+
+Bottom:
+
+🔄 “Start Over” | 📋 “Copy All”
+
+❓ Clinical Question Answering Page
+Input UI:
+Textarea: “Enter clinical question or paste MCQ”
+
+Optional image upload (thumbnail preview)
+
+“Summarize & Answer” button
+
+Output:
+Answer Section (markdown-styled, collapsible)
+
+Reasoning Section: Numbered or bulleted steps
+
+Suggested Slide Title: Shown in a tag or editable text
+
+📊 Content Generator / Slide Builder
+Input Mode Tabs:
+“Clinical Question” / “General Topic”
+
+Input Section:
+Textarea: Medical topic or question
+
+Slide count picker (dropdown or number input)
+
+Optional: Paste previous answer/reasoning
+
+Generate Button:
+💡 “Generate Slide Outline”
+
+Output Viewer:
+Each Slide Card:
+
+Title
+
+Content (bullet points, tables, etc.)
+
+Options: Edit, Delete, Select (checkbox)
+
+Footer:
+⚙️ Modify Selected: “Expand” | “Replace” | “Add Explanation”
+
+📥 Export: Word / PDF / JSON
+
+📜 History Page
+List view of saved cases (Diagnosis or Slides)
+
+Each History Card:
+
+Title + Type icon (🧠 or 📊)
+
+Date
+
+“Open” button
+
+🔐 Authentication Page
+Full-screen modal with:
+
+Email + Password form
+
+“Continue with Google”
+
+Subtle app logo on top
+
+Validation, errors, and loading states handled visually
+
+🧩 Shared UI Components (Mobile)
+Component	Design Tip
+DiagnosisCard	Card with title, confidence bar, toggle reasoning
+SlideEditor	Swipeable tabs or accordion layout
+Header	Minimal: only logo and avatar
+Image Upload UI	Drag-to-upload, clipboard support, thumbnails
+Accordion	Used for expandable reasoning, test lists
+
+🎨 Color Palette
+Purpose	Hex Code
+Primary Blue	#007BFF
+Accent Green	#28A745
+Soft Gray	#F8F9FA
+Text Dark Gray	#343A40
+Background	#FFFFFF
+
+🔤 Typography
+Use	Font	Size	Style
+Headings	Inter Bold	20–24px	Clean, strong
+Body Text	Inter	14–16px	Neutral
+Small Labels	Inter Light	12px	Subtle
+
+✅ UX Best Practices
+Avoid long-scroll walls of text — use accordions or tabs.
+
+Sticky buttons at bottom of screen for primary actions.
+
+Use toast notifications (e.g., “Diagnosis Generated Successfully”).
+
+Allow copy-to-clipboard with visual feedback.
+
+Light/Dark mode toggle (optional, if time permits).

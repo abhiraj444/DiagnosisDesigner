@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+@layer base {
+  :root { /* Light Mode - Warm Clinical Pocket-Book & Paper Journal */
+    /* Core Paper Palette */
+    --background: 40 33% 97%; /* Warm Off-White / Soft Parchment #FAF8F5 */
+    --foreground: 220 18% 18%; /* Dark Ink Charcoal #22262E */
+    --card: 0 0% 100%; /* Pure Note Paper White */
+    --card-foreground: 220 18% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 18% 18%;
+
+    /* Primary Accent - Deep Oxford Clinical Blue */
+    --primary: 215 65% 40%; /* Crisp Fountain Pen Ink #235697 */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary Elements - Warm Parchment Wash */
+    --secondary: 40 25% 93%; /* #F2EFE9 */
+    --secondary-foreground: 220 18% 18%;
+
+    /* Muted & Annotation Colors */
+    --muted: 40 20% 92%; /* #EDE9E1 */
+    --muted-foreground: 220 10% 45%; /* #69707C */
+
+    /* Accent & Active Tab */
+    --accent: 215 65% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive - Coral Stamp Red */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Ruled Dividers */
+    --border: 40 18% 87%; /* #E4DFD5 */
+    --input: 40 18% 90%;
+    --ring: 215 65% 40%;
+
+    /* Chart Colors - Pastel Editorial Inks */
+    --chart-1: 12 76% 56%;
+    --chart-2: 160 55% 38%;
+    --chart-3: 215 65% 40%;
+    --chart-4: 43 85% 55%;
+    --chart-5: 280 50% 55%;
+
+    /* Context Section Colors */
+    --question: 40 33% 97%;
+    --question-foreground: 220 18% 18%;
+
+    --answer: 40 33% 97%;
+    --answer-foreground: 220 18% 18%;
+
+    --diagnosis: 40 33% 97%;
+    --diagnosis-foreground: 220 18% 18%;
+
+    --reasoning: 45 90% 92%; /* Soft Yellow Legal Pad */
+    --reasoning-foreground: 35 85% 25%;
+
+    --sidebar-background: 40 33% 97%;
+    --sidebar-foreground: 220 18% 18%;
+    --sidebar-primary: 215 65% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 25% 93%;
+    --sidebar-accent-foreground: 220 18% 18%;
+    --sidebar-border: 40 18% 87%;
+    --sidebar-ring: 215 65% 40%;
+
+    --radius: 0.625rem;
+  }
+
+  .dark { /* Dark Mode - Deep Slate Journal & Sepia Inks */
+    color-scheme: dark;
+
+    /* Core Dark Palette */
+    --background: 220 14% 11%; /* #17191D Dark Slate Desk */
+    --foreground: 40 20% 92%; /* #EBE8DF Soft Bone Paper White */
+    --card: 220 12% 16%; /* #21242B Dark Graphite Notebook Page */
+    --card-foreground: 40 20% 92%;
+    --popover: 220 12% 16%;
+    --popover-foreground: 40 20% 92%;
+
+    /* Primary Accent - Vibrant Clinical Cyan/Blue */
+    --primary: 205 75% 56%;
+    --primary-foreground: 220 14% 11%;
+
+    /* Secondary Elements */
+    --secondary: 220 12% 20%;
+    --secondary-foreground: 40 20% 92%;
+
+    /* Muted & Helper */
+    --muted: 220 10% 22%;
+    --muted-foreground: 220 10% 65%;
+
+    /* Accent */
+    --accent: 160 55% 48%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Destructive */
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders */
+    --border: 220 10% 23%;
+    --input: 220 10% 23%;
+    --ring: 205 75% 56%;
+
+    /* Chart Colors */
+    --chart-1: 210 70% 60%;
+    --chart-2: 155 55% 50%;
+    --chart-3: 40 85% 65%;
+    --chart-4: 280 60% 70%;
+    --chart-5: 350 70% 65%;
+
+    --question: 220 14% 11%;
+    --question-foreground: 40 20% 92%;
+
+    --answer: 220 14% 11%;
+    --answer-foreground: 40 20% 92%;
+
+    --diagnosis: 220 14% 11%;
+    --diagnosis-foreground: 40 20% 92%;
+
+    --reasoning: 40 25% 18%;
+    --reasoning-foreground: 43 90% 75%;
+
+    --sidebar-background: 220 12% 16%;
+    --sidebar-foreground: 40 20% 92%;
+    --sidebar-primary: 205 75% 56%;
+    --sidebar-primary-foreground: 220 14% 11%;
+    --sidebar-accent: 220 12% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 220 10% 23%;
+    --sidebar-ring: 205 75% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Ruled note background for medical intake sheets */
+  .ruled-notes-pattern {
+    background-size: 100% 28px;
+    background-image: linear-gradient(to bottom, transparent 27px, hsl(var(--border) / 0.5) 28px);
+    line-height: 28px;
+  }
+
+  /* Dot grid pattern for medical sketch/scratchpad areas */
+  .dot-grid-pattern {
+    background-image: radial-gradient(hsl(var(--border) / 0.7) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+}
+
+/* --- TACTILE PAPER & STICKY NOTE CLASSES --- */
+
+/* Handwritten Sticky Note - Golden Yellow */
+.sticky-note-yellow {
+  background-color: #FEF9C3;
+  color: #713F12;
+  border: 1px solid #FDE047;
+  box-shadow: 0 2px 8px -2px rgba(161, 98, 7, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .sticky-note-yellow {
+  background-color: #2D2612;
+  color: #FEF08A;
+  border: 1px solid #713F12;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Handwritten Sticky Note - Mint Sage / High-Yield Pearls */
+.sticky-note-green {
+  background-color: #ECFDF5;
+  color: #064E3B;
+  border: 1px solid #A7F3D0;
+  box-shadow: 0 2px 8px -2px rgba(5, 150, 105, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .sticky-note-green {
+  background-color: #06281D;
+  color: #A7F3D0;
+  border: 1px solid #065F46;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Handwritten Sticky Note - Rose / Emergent Warning */
+.sticky-note-rose {
+  background-color: #FFF1F2;
+  color: #881337;
+  border: 1px solid #FECDD3;
+  box-shadow: 0 2px 8px -2px rgba(225, 29, 72, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .sticky-note-rose {
+  background-color: #2E0B14;
+  color: #FECDD3;
+  border: 1px solid #881337;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Handwritten Sticky Note - Lavender / Physiology */
+.sticky-note-purple {
+  background-color: #F5F3FF;
+  color: #4C1D95;
+  border: 1px solid #DDD6FE;
+  box-shadow: 0 2px 8px -2px rgba(124, 58, 237, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .sticky-note-purple {
+  background-color: #1E1238;
+  color: #DDD6FE;
+  border: 1px solid #5B21B6;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Highlighting marker effect */
+.highlight-yellow {
+  background: linear-gradient(104deg, rgba(254, 240, 138, 0) 0.9%, rgba(254, 240, 138, 0.85) 2.4%, rgba(254, 240, 138, 0.7) 98%);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+.dark .highlight-yellow {
+  background: linear-gradient(104deg, rgba(161, 98, 7, 0) 0.9%, rgba(161, 98, 7, 0.6) 2.4%, rgba(161, 98, 7, 0.5) 98%);
+  color: #FEF08A;
+}
+
+.highlight-green {
+  background: linear-gradient(104deg, rgba(167, 243, 208, 0) 0.9%, rgba(167, 243, 208, 0.85) 2.4%, rgba(167, 243, 208, 0.7) 98%);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+.dark .highlight-green {
+  background: linear-gradient(104deg, rgba(6, 95, 70, 0) 0.9%, rgba(6, 95, 70, 0.6) 2.4%, rgba(6, 95, 70, 0.5) 98%);
+  color: #A7F3D0;
+}
+
+.highlight-pink {
+  background: linear-gradient(104deg, rgba(254, 205, 211, 0) 0.9%, rgba(254, 205, 211, 0.85) 2.4%, rgba(254, 205, 211, 0.7) 98%);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+.dark .highlight-pink {
+  background: linear-gradient(104deg, rgba(159, 18, 57, 0) 0.9%, rgba(159, 18, 57, 0.6) 2.4%, rgba(159, 18, 57, 0.5) 98%);
+  color: #FECDD3;
+}
+
+/* Rubber Stamp Badges */
+.stamp-badge {
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-width: 1.5px;
+  border-style: solid;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transform: rotate(-1deg);
+  transition: transform 0.15s ease;
+}
+.stamp-badge:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.stamp-emergent {
+  border-color: #DC2626;
+  color: #DC2626;
+  background-color: rgba(254, 226, 226, 0.6);
+}
+.dark .stamp-emergent {
+  border-color: #F87171;
+  color: #F87171;
+  background-color: rgba(127, 29, 29, 0.4);
+}
+
+.stamp-urgent {
+  border-color: #D97706;
+  color: #D97706;
+  background-color: rgba(254, 243, 199, 0.6);
+}
+.dark .stamp-urgent {
+  border-color: #FBBF24;
+  color: #FBBF24;
+  background-color: rgba(120, 53, 15, 0.4);
+}
+
+.stamp-confirmed {
+  border-color: #059669;
+  color: #059669;
+  background-color: rgba(209, 250, 229, 0.6);
+}
+.dark .stamp-confirmed {
+  border-color: #34D399;
+  color: #34D399;
+  background-color: rgba(6, 78, 59, 0.4);
+}
+
+.stamp-inquiry {
+  border-color: #2563EB;
+  color: #2563EB;
+  background-color: rgba(219, 234, 254, 0.6);
+}
+.dark .stamp-inquiry {
+  border-color: #60A5FA;
+  color: #60A5FA;
+  background-color: rgba(30, 58, 138, 0.4);
+}
+
+/* Washi Tape Header Decoration */
+.washi-tape-strip {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(217, 119, 6, 0.18),
+    rgba(217, 119, 6, 0.18) 10px,
+    rgba(217, 119, 6, 0.28) 10px,
+    rgba(217, 119, 6, 0.28) 20px
+  );
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+

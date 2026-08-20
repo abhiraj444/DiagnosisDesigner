@@ -1,0 +1,75 @@
+[01:26:25.777] Running build in Washington, D.C., USA (East) – iad1
+[01:26:25.778] Build machine configuration: 2 cores, 8 GB
+[01:26:25.793] Cloning github.com/abhiraj444/medical-case-v4 (Branch: main, Commit: c4810ae)
+[01:26:26.264] Cloning completed: 471.000ms
+[01:26:29.020] Restored build cache from previous deployment (q4trH5HEJRPqMEWhWy1dUHwyUtXf)
+[01:26:32.624] Running "vercel build"
+[01:26:33.114] Vercel CLI 44.4.3
+[01:26:33.471] Installing dependencies...
+[01:26:35.820] 
+[01:26:35.821] added 6 packages in 2s
+[01:26:35.822] 
+[01:26:35.822] 202 packages are looking for funding
+[01:26:35.822]   run `npm fund` for details
+[01:26:35.851] Detected Next.js version: 15.3.3
+[01:26:35.857] Running "npm run build"
+[01:26:35.970] 
+[01:26:35.970] > nextn@0.1.0 build
+[01:26:35.971] > next build
+[01:26:35.971] 
+[01:26:36.889]    ▲ Next.js 15.3.3
+[01:26:36.890] 
+[01:26:36.918]    Creating an optimized production build ...
+[01:26:54.623] Failed to compile.
+[01:26:54.623] 
+[01:26:54.624] node:fs
+[01:26:54.624] Module build failed: UnhandledSchemeError: Reading from "node:fs" is not handled by plugins (Unhandled scheme).
+[01:26:54.624] Webpack supports "data:" and "file:" URIs by default.
+[01:26:54.625] You may need an additional plugin to handle "node:" URIs.
+[01:26:54.625]     at /vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408376
+[01:26:54.625]     at Hook.eval [as callAsync] (eval at create (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:14:9224), <anonymous>:6:1)
+[01:26:54.625]     at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:14:6378)
+[01:26:54.626]     at Object.processResource (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408301)
+[01:26:54.626]     at processResource (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:5308)
+[01:26:54.626]     at iteratePitchingLoaders (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:4667)
+[01:26:54.626]     at runLoaders (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:8590)
+[01:26:54.626]     at NormalModule._doBuild (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408163)
+[01:26:54.627]     at NormalModule.build (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:410176)
+[01:26:54.627]     at /vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:82494
+[01:26:54.627] 
+[01:26:54.627] Import trace for requested module:
+[01:26:54.628] node:fs
+[01:26:54.628] ./node_modules/pptxgenjs/dist/pptxgen.es.js
+[01:26:54.628] ./src/lib/ppt-generator.ts
+[01:26:54.629] ./src/components/SlideEditor.tsx
+[01:26:54.629] ./src/app/content-generator/page.tsx
+[01:26:54.629] 
+[01:26:54.630] node:https
+[01:26:54.630] Module build failed: UnhandledSchemeError: Reading from "node:https" is not handled by plugins (Unhandled scheme).
+[01:26:54.630] Webpack supports "data:" and "file:" URIs by default.
+[01:26:54.630] You may need an additional plugin to handle "node:" URIs.
+[01:26:54.630]     at /vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408376
+[01:26:54.630]     at Hook.eval [as callAsync] (eval at create (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:14:9224), <anonymous>:6:1)
+[01:26:54.630]     at Object.processResource (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408301)
+[01:26:54.630]     at processResource (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:5308)
+[01:26:54.630]     at iteratePitchingLoaders (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:4667)
+[01:26:54.630]     at runLoaders (/vercel/path0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js:1:8590)
+[01:26:54.631]     at NormalModule._doBuild (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:408163)
+[01:26:54.635]     at NormalModule.build (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:410176)
+[01:26:54.635]     at /vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:82494
+[01:26:54.636]     at NormalModule.needBuild (/vercel/path0/node_modules/next/dist/compiled/webpack/bundle5.js:29:414126)
+[01:26:54.636] 
+[01:26:54.636] Import trace for requested module:
+[01:26:54.642] node:https
+[01:26:54.643] ./node_modules/pptxgenjs/dist/pptxgen.es.js
+[01:26:54.643] ./src/lib/ppt-generator.ts
+[01:26:54.643] ./src/components/SlideEditor.tsx
+[01:26:54.644] ./src/app/content-generator/page.tsx
+[01:26:54.644] 
+[01:26:54.646] 
+[01:26:54.647] > Build failed because of webpack errors
+[01:26:54.665] Error: Command "npm run build" exited with 1
+[01:26:55.138] 
+[01:26:57.978] Exiting build container
+
+currently according to this project we have two feature to download the content from content generator section , using word and pdf. but i want to provide one more option to download it in powerpoint. for this i have already working logic code which u can use it from this file @codePPT.html . but the problem is when i tried earlier i got some error in build maybe due to some server side and client side issue , check the log @failedBuild.txt . for project overview  you can also checkout this file @FULL_PROJECT_OVERVIEW.md . please go through the project and try to implement the ppt feature .

@@ -1,0 +1,3 @@
+Bug 1 :- All card and entire website is transparent which makes difficult to read in both light and dark background.
+Bug 2 :- After clicking on result button at any page , two box is showing , but it should show loading icon or specific to the page likeok  if I clicked AI diagnosis section , then it should show , Diagnosing in process , in Content generator , Content is getting generated, If I clicked any case in history , then it should show case is being loaded . before loading actual content.
+Bug 3 :- When image is loaded in dark mode , then in thumbanil section , close button is not visible , close button should be in red color for dark and light mode , to delete the uploaded image

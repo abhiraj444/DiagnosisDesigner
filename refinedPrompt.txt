@@ -1,0 +1,19 @@
+You are an expert medical educator. Your task is to generate a concise and high-yield presentation outline for the medical topic: **{{topic}}**.
+
+**Audience:** Postgraduate medical students (MD/MS), DNB candidates, and advanced MBBS interns in India. The outline should reflect both foundational reinforcement and clinically relevant postgraduate-level insights.
+
+**Constraints & Output Format:**
+
+1. **Strict 15 Topics Limit:** Provide exactly 15 slide titles in total.
+2. **JSON Output Only:** Output a valid JSON object with a single key `"outline"` whose value is an array of 15 strings.
+3. **Content Distribution:**
+   - First **4-5 slides**: Intermediate foundational understanding (but not basic undergraduate).
+   - Remaining **10-11 slides**: Advanced clinical, diagnostic, multiple case studies and management-oriented insights suitable for PG-level viva or presentations.
+4. **Topic Variety & Depth:**
+   - Ensure logical progression: from concept → mechanism → clinical application → research/updates.
+   - Include diagnostic criteria, classification systems, relevant investigations, treatment modalities (pharma + surgical if applicable), and complications.
+   - Where relevant, include recent guidelines, landmark trials, or Indian-specific practice patterns.
+5. **Avoid:**
+   - Vague headers like "Introduction", "Definition", or "Overview".
+   - Excessive overlap or repetition between slides.
+   - Very broad topics that can't be covered in one slide.

@@ -1,0 +1,10 @@
+{
+  "name": "MediGen Clinical Journal",
+  "description": "Clinical Pocket-Book & Rounding Journal: Multi-model AI differential diagnosis, clinical case workup, and teaching slide decks with support for Gemini 3.7 Flash and custom LLM endpoints.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,14 @@
+The GEMINI.md file is a feature of the Google Gemini CLI. It allows project-specific context and instructions to be provided to the Gemini model. 
+Purpose:
+Project-specific instructions: Coding conventions, architectural patterns, or other guidelines can be defined for the model to follow when interacting with a project.
+Enhanced accuracy: This context helps the AI produce more tailored and accurate responses. 
+How it works:
+When the Gemini CLI is launched within a directory, it searches for GEMINI.md files. If found, the content of these files is combined to build an instructional context for the Gemini model. 
+Example Use Cases:
+Define coding style guides: Ensure generated code adheres to formatting and syntax rules.
+Specify project architecture: Guide the AI on how different components of a project interact.
+Provide background information: Give the model context about a project's purpose and functionalities.
+Define the tools the agent should use: Specify preferred tools for certain tasks. 
+Location:
+A GEMINI.md file should typically be created in the root of the project repository. 
+Using GEMINI.md can improve the Gemini CLI's ability to understand and work with a project, leading to more relevant and helpful responses. 

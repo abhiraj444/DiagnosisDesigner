@@ -1,0 +1,565 @@
+{
+  "slides": [
+    {
+      "title": "Introduction to Lymphatic Filariasis",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Lymphatic Filariasis (LF), commonly known as elephantiasis, is a major cause of permanent disability worldwide and is classified by the WHO as a Neglected Tropical Disease (NTD).",
+          "bold": [
+            "Lymphatic Filariasis",
+            "elephantiasis",
+            "Neglected Tropical Disease"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "It is caused by infection with nematode parasites of the family Filariodidea.",
+              "bold": [
+                "Filariodidea"
+              ]
+            },
+            {
+              "text": "Transmission occurs through the bite of infected mosquitoes.",
+              "bold": [
+                "mosquitoes"
+              ]
+            },
+            {
+              "text": "While rarely fatal, it leads to significant social stigma and economic loss.",
+              "bold": [
+                "social stigma"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Etiology: The Causative Nematodes",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Three specific species of filarial worms are responsible for the clinical manifestations of lymphatic filariasis in humans.",
+          "bold": [
+            "filarial worms"
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Species",
+            "Prevalence",
+            "Geographic Distribution"
+          ],
+          "rows": [
+            {
+              "cells": [
+                "Wuchereria bancrofti",
+                "Responsible for 90% of cases",
+                "Global (Tropics/Subtropics)"
+              ]
+            },
+            {
+              "cells": [
+                "Brugia malayi",
+                "Responsible for most of the remainder",
+                "South and South-East Asia"
+              ]
+            },
+            {
+              "cells": [
+                "Brugia timori",
+                "Rarely encountered",
+                "Timor and surrounding islands"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Epidemiology and Mosquito Vectors",
+      "content": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Culex: Widely distributed in urban and semi-urban areas (e.g., C. quinquefasciatus).",
+              "bold": [
+                "Culex"
+              ]
+            },
+            {
+              "text": "Anopheles: Primarily transmits LF in rural areas of Africa.",
+              "bold": [
+                "Anopheles"
+              ]
+            },
+            {
+              "text": "Aedes: Predominantly found in endemic islands in the Pacific.",
+              "bold": [
+                "Aedes"
+              ]
+            },
+            {
+              "text": "Mansonia: Important vector for Brugian filariasis in South-East Asia.",
+              "bold": [
+                "Mansonia"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Risk factors include poor sanitation and proximity to stagnant water where vectors breed.",
+          "bold": [
+            "poor sanitation",
+            "stagnant water"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Life Cycle: From Vector to Human Host",
+      "content": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Mosquito Inoculation: Infected larvae (L3) enter the skin through the bite wound.",
+              "bold": [
+                "L3",
+                "inoculation"
+              ]
+            },
+            {
+              "text": "Migration: Larvae migrate to the lymphatic system and mature into adult worms (macrofilariae).",
+              "bold": [
+                "lymphatic system",
+                "macrofilariae"
+              ]
+            },
+            {
+              "text": "Reproduction: Adult worms live for 6-8 years and produce millions of microfilariae.",
+              "bold": [
+                "microfilariae"
+              ]
+            },
+            {
+              "text": "Vector Ingestion: Mosquitoes ingest microfilariae during a blood meal, where they develop into L3 larvae.",
+              "bold": [
+                "L3 larvae"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Pathophysiology of Lymphatic Obstruction",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "The disease is characterized by lymphangiectasia (dilation of lymphatics) induced by both the living adult worms and the host's immune response.",
+          "bold": [
+            "lymphangiectasia",
+            "immune response"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Mechanical Blockage: Presence of adult worms causes physical obstruction.",
+              "bold": [
+                "Mechanical Blockage"
+              ]
+            },
+            {
+              "text": "Inflammatory Response: Host Th2-mediated responses lead to vessel remodeling.",
+              "bold": [
+                "Th2-mediated"
+              ]
+            },
+            {
+              "text": "Secondary Infection: Impaired lymphatic drainage leads to skin infections (cellulitis).",
+              "bold": [
+                "Secondary Infection"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Acute Manifestations: Adenolymphangitis (ADLA)",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "ADLA episodes are acute clinical flares that drive the progression of the disease.",
+          "bold": [
+            "ADLA"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Fever, chills, and headache (constitutional symptoms).",
+              "bold": [
+                "Fever"
+              ]
+            },
+            {
+              "text": "Retrograde Lymphangitis: Inflammation spreading distally from the lymph node.",
+              "bold": [
+                "Retrograde Lymphangitis"
+              ]
+            },
+            {
+              "text": "Painful, swollen lymph nodes (lymphadenitis).",
+              "bold": [
+                "lymphadenitis"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Chronic Features: Lymphedema and Elephantiasis",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Chronic filariasis develops over years due to permanent lymphatic damage.",
+          "bold": [
+            "Chronic filariasis"
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Stage",
+            "Description"
+          ],
+          "rows": [
+            {
+              "cells": [
+                "Early Stage",
+                "Pitting edema that reverses with elevation."
+              ]
+            },
+            {
+              "cells": [
+                "Intermediate",
+                "Non-pitting edema; skin starts to thicken."
+              ]
+            },
+            {
+              "cells": [
+                "Elephantiasis",
+                "Extreme swelling, skin hardening (hyperkeratosis), and warty growths."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Urogenital Involvement: Hydrocele and Chyluria",
+      "content": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Hydrocele: Accumulation of fluid in the tunica vaginalis; the most common chronic sign of W. bancrofti.",
+              "bold": [
+                "Hydrocele",
+                "W. bancrofti"
+              ]
+            },
+            {
+              "text": "Chyluria: Rupture of lymphatics into the urinary tract, leading to milky white urine containing chyle.",
+              "bold": [
+                "Chyluria",
+                "milky white urine"
+              ]
+            },
+            {
+              "text": "Scrotal Elephantiasis: Massive thickening of the scrotal skin.",
+              "bold": [
+                "Scrotal Elephantiasis"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tropical Pulmonary Eosinophilia (TPE)",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "TPE is a distinct clinical syndrome resulting from a hypersensitivity reaction to microfilariae in the pulmonary vasculature.",
+          "bold": [
+            "Tropical Pulmonary Eosinophilia",
+            "hypersensitivity"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Clinical Features: Nocturnal paroxysmal cough, wheezing, and dyspnea.",
+              "bold": [
+                "Nocturnal paroxysmal cough"
+              ]
+            },
+            {
+              "text": "Diagnosis: Extreme eosinophilia (>3000/uL) and very high serum IgE levels.",
+              "bold": [
+                "eosinophilia",
+                "IgE"
+              ]
+            },
+            {
+              "text": "Response: Rapid clinical improvement with Diethylcarbamazine (DEC).",
+              "bold": [
+                "DEC"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Laboratory Diagnosis: Microfilaria Detection",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Traditional diagnosis relies on the visualization of microfilariae in peripheral blood.",
+          "bold": [
+            "microfilariae"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Nocturnal Periodicity: Blood must be collected between 10 PM and 2 AM for most species.",
+              "bold": [
+                "Nocturnal Periodicity"
+              ]
+            },
+            {
+              "text": "Thick Blood Film: Stained with Giemsa to identify morphology and sheath presence.",
+              "bold": [
+                "Thick Blood Film",
+                "Giemsa"
+              ]
+            },
+            {
+              "text": "Concentration Methods: Knott’s technique or membrane filtration for low parasitemia.",
+              "bold": [
+                "Knott’s technique"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Advanced Diagnostics: Antigen Tests and Imaging",
+      "content": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Circulating Filarial Antigen (CFA): Gold standard for W. bancrofti; available as rapid Immunochromatographic Tests (ICT).",
+              "bold": [
+                "Circulating Filarial Antigen",
+                "ICT"
+              ]
+            },
+            {
+              "text": "Ultrasonography: Can detect live adult worms in the scrotal lymphatics (Filarial Dance Sign).",
+              "bold": [
+                "Filarial Dance Sign"
+              ]
+            },
+            {
+              "text": "Molecular Methods: PCR-based assays for detecting parasite DNA in blood or vectors.",
+              "bold": [
+                "PCR"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Pharmacological Management: DEC and Alternatives",
+      "content": [
+        {
+          "type": "table",
+          "headers": [
+            "Drug",
+            "Mechanism/Use",
+            "Contraindications"
+          ],
+          "rows": [
+            {
+              "cells": [
+                "Diethylcarbamazine (DEC)",
+                "Kills microfilariae and some adults",
+                "Onchocerciasis (causes Mazeotti reaction)"
+              ]
+            },
+            {
+              "cells": [
+                "Albendazole",
+                "Inhibits microtubule synthesis; helps kill adults",
+                "Pregnancy"
+              ]
+            },
+            {
+              "cells": [
+                "Ivermectin",
+                "Potent microfilaricide",
+                "Loa loa co-infection (risk of encephalopathy)"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Doxycycline is increasingly used to target Wolbachia, an endosymbiotic bacterium essential for worm survival.",
+          "bold": [
+            "Doxycycline",
+            "Wolbachia"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Surgical and Conservative Morbidity Management",
+      "content": [
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Hygiene: Daily washing of the affected limb with soap and water to prevent secondary infection.",
+              "bold": [
+                "Hygiene"
+              ]
+            },
+            {
+              "text": "Elevation and Exercise: Encourages lymphatic drainage.",
+              "bold": [
+                "Elevation"
+              ]
+            },
+            {
+              "text": "Hydrocelectomy: Surgical excision of the hydrocele sac to restore function and comfort.",
+              "bold": [
+                "Hydrocelectomy"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Preventive Chemotherapy: Mass Drug Administration (MDA)",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "MDA is the primary strategy to interrupt transmission by reducing the microfilarial load in the community to levels where it cannot be sustained.",
+          "bold": [
+            "Mass Drug Administration",
+            "interrupt transmission"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Standard Regimen: Annual single dose of Albendazole + DEC (or Ivermectin in Oncho-endemic areas).",
+              "bold": [
+                "Albendazole",
+                "DEC"
+              ]
+            },
+            {
+              "text": "Triple Therapy (IDA): Combination of Ivermectin, DEC, and Albendazole used for accelerated elimination.",
+              "bold": [
+                "Triple Therapy",
+                "IDA"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Global Strategies for Elimination (GPELF)",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "The Global Programme to Eliminate Lymphatic Filariasis (GPELF) was launched by the WHO in 2000 with two main pillars.",
+          "bold": [
+            "GPELF"
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "items": [
+            {
+              "text": "Pillar 1: Interrupting transmission through large-scale annual MDA.",
+              "bold": [
+                "Interrupting transmission"
+              ]
+            },
+            {
+              "text": "Pillar 2: Morbidity Management and Disability Prevention (MMDP) for those already affected.",
+              "bold": [
+                "MMDP"
+              ]
+            },
+            {
+              "text": "Goal: To achieve elimination of LF as a public health problem by 2030.",
+              "bold": [
+                "2030"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Molecular Drivers of Lymphangiogenesis: VEGF-C and VEGF-D Signaling in Chronic Filarial Pathology",
+      "content": [
+        "Key Mediators: VEGF-C and VEGF-D serve as the primary growth factors driving lymphatic endothelial cell (LEC) proliferation and migration via VEGFR-3 activation.",
+        "Parasite-Host Interaction: Chronic filarial infection (e.g., W. bancrofti) triggers host macrophages and LECs to overexpress VEGF-C/D in response to parasite-derived antigens.",
+        "Pathological Lymphangiectasia: Sustained signaling leads to abnormal lymphatic vessel dilation and structural remodeling, characteristic of chronic lymphedema.",
+        "Clinical Correlation: Elevated serum levels of VEGF-C are markers for lymphatic dysfunction and correlate with the severity of elephantiasis and hydrocele.",
+        "Downstream Effects: Activation of the Prox1 transcription factor and MAPK/Akt pathways reinforces LEC survival and vessel hyper-proliferation.",
+        "Therapeutic Implications: Targeting the VEGF-C/VEGFR-3 axis offers a potential strategy to arrest or reverse lymphatic damage in filarial endemic populations."
+      ]
+    },
+    {
+      "title": "Molecular Targeting of Wolbachia Endosymbionts: Biochemical Pathways and Macrofilaricidal Efficacy",
+      "content": [
+        "Obligate Endosymbiosis: Wolbachia provides essential metabolites (heme, riboflavin, and nucleotides) critical for filarial nematode fertility, larval development, and survival.",
+        "Heme Biosynthesis Pathway: Wolbachia possesses a complete heme pathway missing in the host nematode; its disruption leads to profound defects in embryogenesis and molting.",
+        "Translational Inhibition: Tetracyclines (e.g., Doxycycline) target the bacterial 30S ribosomal subunit, causing endosymbiont depletion and subsequent adult worm senescence.",
+        "Macrofilaricidal Efficacy: Sustained clearance of Wolbachia results in the eventual death of adult worms (macrofilaricidal effect), offering a curative advantage over microfilaricides.",
+        "Clinical Safety Profile: Gradual macrofilaricidal action reduces the risk of severe systemic inflammatory reactions (Mazotti-like) caused by rapid microfilarial death.",
+        "Novel Therapeutics: Development of DNA-dependent RNA polymerase inhibitors (e.g., Corallopyronin A) and TylAMac aims to shorten treatment courses for improved field applicability."
+      ]
+    }
+  ]
+}

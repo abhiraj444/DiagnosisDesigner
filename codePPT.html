@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to PowerPoint Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* This hidden div is the core of the layout engine. 
+           It's styled to mimic a PowerPoint slide's content area (960x540px is a 16:9 aspect ratio).
+           We'll render content here first to measure its height before adding it to the actual slide. */
+        #virtual-slide {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            visibility: hidden;
+            width: 880px; /* 960px slide width - 40px left/right padding */
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .status-log-entry {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-600">JSON to PowerPoint Generator</h1>
+            <p class="mt-2 text-lg text-gray-600">Paste your structured JSON to create a professional presentation instantly.</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="mb-6">
+                <label for="json-input" class="block text-lg font-medium text-gray-700 mb-2">JSON Data</label>
+                <textarea id="json-input" rows="15" class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" placeholder="Paste your JSON content here..."></textarea>
+            </div>
+
+            <div class="text-center">
+                <button id="generate-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 active:bg-blue-800 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Generate Presentation
+                </button>
+            </div>
+
+            <div id="status-container" class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                <h3 class="font-bold text-lg mb-2">Generation Log:</h3>
+                <div id="status-log" class="text-sm text-gray-600 space-y-1 font-mono"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="virtual-slide"></div>
+
+    <script>
+        // --- CONFIGURATION --- //
+        const SLIDE_WIDTH = 10; // inches
+        const SLIDE_HEIGHT = 5.625; // inches (16:9 aspect ratio)
+        const MARGIN_TOP = 0.25;
+        const MARGIN_LEFT = 0.5;
+        const MARGIN_RIGHT = 0.5;
+        const MARGIN_BOTTOM = 0.25;
+        const CONTENT_WIDTH = SLIDE_WIDTH - MARGIN_LEFT - MARGIN_RIGHT;
+        const CONTENT_HEIGHT = SLIDE_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM;
+        
+        const TITLE_OPTIONS = {
+            fontSize: 28,
+            bold: true,
+            color: '0052CC',
+            h: 0.75, // Height for the title box
+        };
+
+
+        // --- DOM ELEMENTS --- //
+        const generateBtn = document.getElementById('generate-btn');
+        const jsonInput = document.getElementById('json-input');
+        const virtualSlide = document.getElementById('virtual-slide');
+        const statusContainer = document.getElementById('status-container');
+        const statusLog = document.getElementById('status-log');
+
+        // --- EVENT LISTENER --- //
+        generateBtn.addEventListener('click', generatePresentation);
+
+        // --- LOGGING UTILITY --- //
+        function logStatus(message, type = 'info') {
+            statusContainer.classList.remove('hidden');
+            const entry = document.createElement('p');
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            if (type === 'error') {
+                entry.className = 'text-red-500 status-log-entry';
+            } else if (type === 'success') {
+                entry.className = 'text-green-600 font-bold status-log-entry';
+            } else {
+                 entry.className = 'status-log-entry';
+            }
+            statusLog.appendChild(entry);
+            statusLog.scrollTop = statusLog.scrollHeight;
+        }
+
+        // --- MEASUREMENT UTILITY --- //
+        /**
+         * Measures the height of an HTML string by rendering it in the virtual slide.
+         * @param {string} htmlContent - The HTML content to measure.
+         * @returns {number} The height in inches.
+         */
+        function measureHeight(htmlContent) {
+            virtualSlide.innerHTML = htmlContent;
+            // The conversion factor from pixels to inches is based on 96 DPI (standard for web)
+            const pixelHeight = virtualSlide.offsetHeight;
+            return pixelHeight / 96;
+        }
+
+        /**
+         * Formats text with bold parts into the array structure pptxgenjs requires for rich text.
+         * @param {string} text - The full text.
+         * @param {string[]} boldParts - An array of substrings to make bold.
+         * @returns {Array<object>} An array of text objects for pptxgenjs.
+         */
+        function formatTextForPptx(text, boldParts = []) {
+            if (!boldParts || boldParts.length === 0) {
+                return [{ text }];
+            }
+
+            // Create a regex to find all bold parts. Escape special characters.
+            const escapedBoldParts = boldParts.map(part => part.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+            const boldRegex = new RegExp(`(${escapedBoldParts.join('|')})`, 'g');
+            const parts = text.split(boldRegex);
+
+            return parts.filter(part => part).map(part => {
+                const isBold = boldParts.includes(part);
+                return { text: part, options: { bold: isBold } };
+            });
+        }
+        
+        /**
+         * The main function to generate the presentation.
+         */
+        async function generatePresentation() {
+            statusLog.innerHTML = '';
+            logStatus('Starting presentation generation...');
+
+            let jsonData;
+            try {
+                jsonData = JSON.parse(jsonInput.value);
+                if (!jsonData.slides || !Array.isArray(jsonData.slides)) {
+                    throw new Error("JSON must have a 'slides' array.");
+                }
+            } catch (error) {
+                logStatus(`Error parsing JSON: ${error.message}`, 'error');
+                return;
+            }
+
+            let pptx = new PptxGenJS();
+            pptx.layout = 'LAYOUT_16x9';
+
+            let slideNumber = 0;
+            for (const slideData of jsonData.slides) {
+                slideNumber++;
+                logStatus(`Processing original slide ${slideNumber}: "${slideData.title}"`);
+                await processSlide(pptx, slideData);
+            }
+
+            pptx.writeFile({ fileName: 'Generated-Presentation.pptx' })
+                .then(fileName => logStatus(`Presentation "${fileName}" created successfully!`, 'success'))
+                .catch(err => logStatus(`Error saving presentation: ${err}`, 'error'));
+        }
+
+        /**
+         * Processes a single slide's data from the JSON, handling content and pagination.
+         * @param {PptxGenJS} pptx - The presentation object.
+         * @param {object} slideData - The data for one slide from the JSON.
+         */
+        async function processSlide(pptx, slideData) {
+            let currentSlide = pptx.addSlide();
+            let currentY = MARGIN_TOP;
+
+            // Add Title using the centralized style
+            currentSlide.addText(slideData.title, {
+                ...TITLE_OPTIONS,
+                x: MARGIN_LEFT,
+                y: currentY,
+                w: CONTENT_WIDTH,
+            });
+            currentY += TITLE_OPTIONS.h; // Increment Y position after adding title
+            
+            // **CHANGE**: Add extra margin between title and first content block
+            currentY += 0.15;
+
+            for (const content of slideData.content) {
+                // Add a small buffer between content blocks
+                currentY += 0.15;
+
+                // Check for overflow before adding the next block
+                if (currentY >= CONTENT_HEIGHT) {
+                     logStatus('Content overflow, creating a new slide...');
+                     currentSlide = pptx.addSlide();
+                     currentSlide.addText(`${slideData.title} (cont.)`, { ...TITLE_OPTIONS, x: MARGIN_LEFT, y: MARGIN_TOP, w: CONTENT_WIDTH });
+                     currentY = MARGIN_TOP + TITLE_OPTIONS.h + 0.15; // Also add buffer on new slide
+                }
+
+                switch (content.type) {
+                    case 'paragraph': {
+                        const { newY, slide } = await renderParagraph(pptx, currentSlide, content, currentY, slideData.title);
+                        currentY = newY;
+                        currentSlide = slide;
+                        break;
+                    }
+                    case 'bullet_list': {
+                        const { newY, slide } = await renderBulletList(pptx, currentSlide, content, currentY, slideData.title);
+                        currentY = newY;
+                        currentSlide = slide;
+                        break;
+                    }
+                    case 'table': {
+                        const { newY, slide } = await renderTable(pptx, currentSlide, content, currentY, slideData.title);
+                        currentY = newY;
+                        currentSlide = slide;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // --- CONTENT RENDERERS --- //
+
+        async function renderParagraph(pptx, slide, content, startY, slideTitle) {
+            const richText = formatTextForPptx(content.text, content.bold);
+            const htmlToMeasure = `<p style="font-size: 14pt;">${content.text}</p>`;
+            const height = measureHeight(htmlToMeasure);
+
+            if (startY + height > CONTENT_HEIGHT) {
+                logStatus('Paragraph overflow, creating a new slide...');
+                slide = pptx.addSlide();
+                slide.addText(`${slideTitle} (cont.)`, { ...TITLE_OPTIONS, x: MARGIN_LEFT, y: MARGIN_TOP, w: CONTENT_WIDTH });
+                startY = MARGIN_TOP + TITLE_OPTIONS.h + 0.15; // Also add buffer on new slide
+            }
+
+            slide.addText(richText, {
+                x: MARGIN_LEFT,
+                y: startY,
+                w: CONTENT_WIDTH,
+                h: height,
+                fontSize: 14,
+                color: '333333'
+            });
+
+            return { newY: startY + height, slide: slide };
+        }
+
+        async function renderBulletList(pptx, slide, content, startY, slideTitle) {
+            for (const item of content.items) {
+                const richText = formatTextForPptx(item.text, item.bold);
+                const htmlToMeasure = `<p style="font-size: 14pt; margin-left: 20px;">• ${item.text}</p>`;
+                const height = measureHeight(htmlToMeasure) + 0.05; // Add buffer for bullet point spacing
+
+                if (startY + height > CONTENT_HEIGHT) {
+                    logStatus('Bullet list overflow, creating a new slide...');
+                    slide = pptx.addSlide();
+                    slide.addText(`${slideTitle} (cont.)`, { ...TITLE_OPTIONS, x: MARGIN_LEFT, y: MARGIN_TOP, w: CONTENT_WIDTH });
+                    startY = MARGIN_TOP + TITLE_OPTIONS.h + 0.15; // Also add buffer on new slide
+                }
+
+                slide.addText(richText, {
+                    x: MARGIN_LEFT + 0.2,
+                    y: startY,
+                    w: CONTENT_WIDTH - 0.2,
+                    h: height,
+                    fontSize: 14,
+                    bullet: true,
+                    color: '333333'
+                });
+                startY += height;
+            }
+            return { newY: startY, slide: slide };
+        }
+
+        async function renderTable(pptx, slide, content, startY, slideTitle) {
+            const headerOptions = { fill: '0052CC', color: 'FFFFFF', bold: true, fontSize: 12 };
+            const rowOptions = { fontSize: 11, color: '333333' };
+            const ROW_BUFFER = 0.04; 
+            
+            let rowsForCurrentSlide = [];
+            rowsForCurrentSlide.push(content.headers.map(h => ({ text: h, options: headerOptions })));
+
+            const headerHtml = `<table><tr style="font-size: 12pt; font-weight: bold;">${content.headers.map(h => `<td>${h}</td>`).join('')}</tr></table>`;
+            let tableHeightOnSlide = measureHeight(headerHtml) + ROW_BUFFER;
+
+            for (const row of content.rows) {
+                const rowHtml = `<table><tr style="font-size: 11pt;">${row.cells.map(c => `<td>${c}</td>`).join('')}</tr></table>`;
+                const rowHeight = measureHeight(rowHtml) + ROW_BUFFER;
+
+                if (startY + tableHeightOnSlide + rowHeight > CONTENT_HEIGHT) {
+                    logStatus('Table overflow, paginating...');
+                    slide.addTable(rowsForCurrentSlide, { x: MARGIN_LEFT, y: startY, w: CONTENT_WIDTH, autoPage: false });
+                    
+                    slide = pptx.addSlide();
+                    slide.addText(`${slideTitle} (cont.)`, { ...TITLE_OPTIONS, x: MARGIN_LEFT, y: MARGIN_TOP, w: CONTENT_WIDTH });
+                    startY = MARGIN_TOP + TITLE_OPTIONS.h + 0.15; // Also add buffer on new slide
+                    
+                    rowsForCurrentSlide = [content.headers.map(h => ({ text: h, options: headerOptions }))];
+                    tableHeightOnSlide = measureHeight(headerHtml) + ROW_BUFFER;
+                }
+
+                rowsForCurrentSlide.push(row.cells.map(c => ({ text: c, options: rowOptions })));
+                tableHeightOnSlide += rowHeight;
+            }
+
+            if (rowsForCurrentSlide.length > 1) { 
+                slide.addTable(rowsForCurrentSlide, { x: MARGIN_LEFT, y: startY, w: CONTENT_WIDTH, autoPage: false });
+            }
+            
+            // **CHANGE**: Add extra margin after the table ends
+            const finalY = startY + tableHeightOnSlide + 0.2;
+
+            return { newY: finalY, slide: slide };
+        }
+
+    </script>
+</body>
+</html>
