@@ -33,6 +33,7 @@ interface SettingsContextType {
     activeModel: string;
     aiConfig: AiConfig;
     isConfigured: boolean;
+    hasServerKey: boolean;
 
     // Language & Audience Preferences
     language: TargetLanguage;
@@ -47,6 +48,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     const [aiProvider, setAiProviderInternal] = useState<AiProvider>('gemini');
     const [geminiApiKey, setGeminiApiKeyInternal] = useState<string>('');
     const [geminiModel, setGeminiModelInternal] = useState<string>(DEFAULT_GEMINI_MODEL);
+    const [hasServerKey, setHasServerKey] = useState<boolean>(false);
 
     const [customEndpoint, setCustomEndpointInternal] = useState<string>('');
     const [customApiKey, setCustomApiKeyInternal] = useState<string>('');
@@ -56,6 +58,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     const [audienceMode, setAudienceModeInternal] = useState<AudienceMode>('doctor');
 
     useEffect(() => {
+        // Check if server-side environment variable is configured
+        fetch('/api/ai/status')
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+                if (data?.hasServerKey) {
+                    setHasServerKey(true);
+                }
+            })
+            .catch(() => {
+                // Ignore background fetch failure
+            });
+
         // Load Provider
         const savedProvider = localStorage.getItem('app_ai_provider') as AiProvider | null;
         if (savedProvider === 'gemini' || savedProvider === 'custom') {
@@ -152,7 +166,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     // Derived values
     const isConfigured =
         aiProvider === 'gemini'
-            ? !!geminiApiKey
+            ? (!!geminiApiKey || hasServerKey)
             : !!customEndpoint.trim() && !!customModel.trim();
 
     const activeModel =
@@ -190,6 +204,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
                 activeModel,
                 aiConfig,
                 isConfigured,
+                hasServerKey,
                 language,
                 setLanguage,
                 audienceMode,

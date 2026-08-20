@@ -21,7 +21,9 @@ import {
   Presentation,
   CheckCircle2,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  AlertCircle,
+  AlertTriangle
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/context/SettingsContext';
@@ -44,6 +46,7 @@ function AiDiagnosisContent() {
   const [filePreviews, setFilePreviews] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAskingFollowUp, setIsAskingFollowUp] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [results, setResults] = useState<DiagnosisItem[] | null>(null);
   const [clinicalAnswer, setClinicalAnswer] = useState<ClinicalAnswerData | null>(null);
@@ -178,6 +181,8 @@ function AiDiagnosisContent() {
     event.preventDefault();
     if (!user) return;
     if (!isConfigured) {
+      const missingKeyMsg = 'Google Gemini API Key is missing. Please add your key in Settings or set GEMINI_API_KEY in your deployment environment variables.';
+      setErrorMessage(missingKeyMsg);
       toast({
         title: 'API Key Missing',
         description: 'Please set your Gemini API Key in Settings.',
@@ -186,6 +191,7 @@ function AiDiagnosisContent() {
       return;
     }
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const imageUrls = await Promise.all(
         files.map((file) => LocalDataService.saveFile(file, user.id))
@@ -232,9 +238,11 @@ function AiDiagnosisContent() {
       const savedId = await LocalDataService.saveCase(caseData);
       if (!currentCaseId) setCurrentCaseId(savedId);
       toast({ title: 'Diagnosis Generated', description: 'Clinical case analysis and differential saved.' });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Diagnosis failed:', error);
-      toast({ title: 'Error', description: 'Failed to generate diagnosis.', variant: 'destructive' });
+      const msg = error?.message || (typeof error === 'string' ? error : 'Failed to generate diagnosis.');
+      setErrorMessage(msg);
+      toast({ title: 'AI Diagnosis Error', description: msg, variant: 'destructive', duration: 9000 });
     } finally {
       setIsLoading(false);
     }
@@ -347,6 +355,41 @@ function AiDiagnosisContent() {
 
   return (
     <div className="container mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-8 space-y-6 w-full max-w-full overflow-x-hidden">
+      {errorMessage && (
+        <Card className="border-destructive/60 bg-destructive/10 text-destructive shadow-xs animate-in fade-in slide-in-from-top-2">
+          <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <h4 className="font-semibold text-sm text-destructive">
+                  Diagnosis Generation Issue
+                </h4>
+                <p className="text-xs text-destructive/90 break-words leading-relaxed">
+                  {errorMessage}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setErrorMessage(null)}
+                className="h-8 text-xs border-destructive/30 hover:bg-destructive/15 text-destructive"
+              >
+                Dismiss
+              </Button>
+              <Button
+                asChild
+                size="sm"
+                className="h-8 text-xs bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                <Link href="/settings">Check Settings</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {!isConfigured && (
         <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 shadow-sm">
           <CardContent className="p-4 sm:p-6">

@@ -140,6 +140,53 @@ export async function executeAiPrompt(
 ): Promise<string> {
     const config = resolveAiConfig(configOrKey);
 
+    // Normalize images into mimeType & base64 objects
+    const normalizedImages: Array<{ data: string; mimeType: string }> = [];
+    if (images && images.length > 0) {
+        for (const img of images) {
+            const normalized = await normalizeMediaForGemini(img);
+            if (normalized && normalized.data) {
+                normalizedImages.push(normalized);
+            }
+        }
+    }
+
+    // Attempt 1: Call full-stack Next.js API Route /api/ai/generate
+    if (typeof window !== 'undefined') {
+        try {
+            const apiRes = await fetch('/api/ai/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt,
+                    images: normalizedImages,
+                    config,
+                }),
+            });
+
+            if (apiRes.ok) {
+                const data = await apiRes.json();
+                if (data.text !== undefined) {
+                    return data.text;
+                }
+            } else {
+                const errorData = await apiRes.json().catch(() => null);
+                if (errorData?.error) {
+                    throw new Error(errorData.error);
+                }
+            }
+        } catch (fetchErr: any) {
+            // If the server explicitly returned an error message (like missing API key, rate limit, etc.), rethrow it
+            if (fetchErr?.message && !fetchErr.message.toLowerCase().includes('failed to fetch') && !fetchErr.message.toLowerCase().includes('networkerror')) {
+                throw fetchErr;
+            }
+            console.warn('API Route fetch unavailable, falling back to direct client execution...', fetchErr);
+        }
+    }
+
+    // Direct fallback for custom endpoints
     if (config.provider === 'custom') {
         let endpoint = config.customEndpoint?.trim();
         if (!endpoint) {
@@ -159,27 +206,22 @@ export async function executeAiPrompt(
         }
 
         const contentParts: any[] = [{ type: 'text', text: prompt }];
-        if (images && images.length > 0) {
-            for (const img of images) {
-                const normalized = await normalizeMediaForGemini(img);
-                if (normalized && normalized.data) {
-                    if (normalized.mimeType.startsWith('image/')) {
-                        contentParts.push({
-                            type: 'image_url',
-                            image_url: {
-                                url: `data:${normalized.mimeType};base64,${normalized.data}`,
-                            },
-                        });
-                    } else if (normalized.mimeType.startsWith('audio/')) {
-                        contentParts.push({
-                            type: 'input_audio',
-                            input_audio: {
-                                data: normalized.data,
-                                format: normalized.mimeType.replace('audio/', ''),
-                            },
-                        });
-                    }
-                }
+        for (const norm of normalizedImages) {
+            if (norm.mimeType.startsWith('image/')) {
+                contentParts.push({
+                    type: 'image_url',
+                    image_url: {
+                        url: `data:${norm.mimeType};base64,${norm.data}`,
+                    },
+                });
+            } else if (norm.mimeType.startsWith('audio/')) {
+                contentParts.push({
+                    type: 'input_audio',
+                    input_audio: {
+                        data: norm.data,
+                        format: norm.mimeType.replace('audio/', ''),
+                    },
+                });
             }
         }
 
@@ -202,14 +244,21 @@ export async function executeAiPrompt(
 
         if (!res.ok) {
             const err = await res.text();
-            throw new Error(`Custom AI Endpoint Error (${res.status}): ${err.slice(0, 300)}`);
+            let parsed = err;
+            try {
+                const parsedJson = JSON.parse(err);
+                parsed = parsedJson.error?.message || parsedJson.message || err;
+            } catch {
+                // keep string
+            }
+            throw new Error(`Custom AI Endpoint Error (${res.status}): ${parsed.slice(0, 300)}`);
         }
 
         const data = await res.json();
         return data.choices?.[0]?.message?.content || '';
     }
 
-    // Google Gemini Provider
+    // Direct fallback for Google Gemini
     const apiKey =
         config.geminiApiKey ||
         config.apiKey ||
@@ -218,30 +267,53 @@ export async function executeAiPrompt(
         '';
 
     if (!apiKey) {
-        throw new Error('Google Gemini API Key is missing. Please add your key in Settings.');
+        throw new Error('Google Gemini API Key is missing. Please add your key in Settings (or configure GEMINI_API_KEY in your Vercel project settings).');
     }
 
-    const modelName = config.geminiModel || DEFAULT_GEMINI_MODEL;
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: modelName });
+    const requestedModel = config.geminiModel || DEFAULT_GEMINI_MODEL;
+    const fallbackModels = [requestedModel, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter(
+        (v, i, a) => a.indexOf(v) === i
+    );
 
+    const genAI = new GoogleGenerativeAI(apiKey);
     const parts: any[] = [prompt];
-    if (images && images.length > 0) {
-        for (const img of images) {
-            const normalized = await normalizeMediaForGemini(img);
-            if (normalized && normalized.data) {
-                parts.push({
-                    inlineData: {
-                        data: normalized.data,
-                        mimeType: normalized.mimeType,
-                    },
-                });
+    for (const norm of normalizedImages) {
+        parts.push({
+            inlineData: {
+                data: norm.data,
+                mimeType: norm.mimeType,
+            },
+        });
+    }
+
+    let lastErr: any = null;
+    for (const modelName of fallbackModels) {
+        try {
+            const model = genAI.getGenerativeModel({ model: modelName });
+            const result = await model.generateContent(parts);
+            return result.response.text();
+        } catch (err: any) {
+            lastErr = err;
+            const msg = (err?.message || '').toLowerCase();
+            if (msg.includes('not found') || msg.includes('404') || msg.includes('unsupported model')) {
+                console.warn(`Model ${modelName} not found, attempting next fallback...`);
+                continue;
             }
+            break;
         }
     }
 
-    const result = await model.generateContent(parts);
-    return result.response.text();
+    const rawErr = lastErr?.message || String(lastErr || 'Unknown AI error');
+    if (rawErr.toLowerCase().includes('api_key_invalid') || rawErr.toLowerCase().includes('invalid api key')) {
+        throw new Error('Invalid Google Gemini API Key. Please verify or update your key in Settings.');
+    }
+    if (rawErr.toLowerCase().includes('quota') || rawErr.toLowerCase().includes('429')) {
+        throw new Error('Gemini API Quota Exceeded (429). Please wait a few seconds or check your usage limit in Google AI Studio.');
+    }
+    if (rawErr.toLowerCase().includes('permission_denied') || rawErr.toLowerCase().includes('403')) {
+        throw new Error('Gemini API Permission Denied (403). The provided API key does not have access to this feature.');
+    }
+    throw new Error(`AI Generation Error: ${rawErr}`);
 }
 
 /**

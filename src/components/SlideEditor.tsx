@@ -194,16 +194,18 @@ export function SlideEditor({
   };
 
   const handleModifySlides = async (action: 'replace_content' | 'expand_selected') => {
-    if (!apiKey || selectedIndices.length === 0) return;
+    if (!isConfigured || selectedIndices.length === 0) return;
     setIsModifying(true);
     const indicesSet = new Set(selectedIndices);
     setLoadingSlides(indicesSet);
 
     try {
-      const updatedSlides = await ClientSideAiService.modifySlides(apiKey, {
+      const updatedSlides = await ClientSideAiService.modifySlides(aiConfig, {
         slides,
         selectedIndices,
         action,
+        language,
+        audienceMode,
       });
 
       setSlides(updatedSlides);
@@ -212,9 +214,13 @@ export function SlideEditor({
         title: 'Slides Updated',
         description: `Successfully modified ${selectedIndices.length} slides.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to modify slides:', error);
-      toast({ title: 'Error', description: 'Failed to modify selected slides.', variant: 'destructive' });
+      toast({
+        title: 'Failed to Modify Slides',
+        description: error?.message || 'An error occurred while updating slides.',
+        variant: 'destructive',
+      });
     } finally {
       setIsModifying(false);
       setLoadingSlides(new Set());
@@ -222,15 +228,17 @@ export function SlideEditor({
   };
 
   const handleModifySingleSlide = async (slideIndex: number, action: 'replace_content' | 'expand_selected') => {
-    if (!apiKey) return;
+    if (!isConfigured) return;
     setIsModifying(true);
     setLoadingSlides(new Set([slideIndex]));
 
     try {
-      const updatedSlides = await ClientSideAiService.modifySlides(apiKey, {
+      const updatedSlides = await ClientSideAiService.modifySlides(aiConfig, {
         slides,
         selectedIndices: [slideIndex],
         action,
+        language,
+        audienceMode,
       });
 
       setSlides(updatedSlides);
@@ -239,9 +247,13 @@ export function SlideEditor({
         title: action === 'replace_content' ? 'Slide Refreshed' : 'Slide Expanded',
         description: `Successfully updated slide: ${slides[slideIndex]?.title || `#${slideIndex + 1}`}`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to modify slide:', error);
-      toast({ title: 'Error', description: 'Failed to modify slide.', variant: 'destructive' });
+      toast({
+        title: 'Failed to Modify Slide',
+        description: error?.message || 'An error occurred while modifying this slide.',
+        variant: 'destructive',
+      });
     } finally {
       setIsModifying(false);
       setLoadingSlides(new Set());
@@ -259,27 +271,34 @@ export function SlideEditor({
   };
 
   const fetchNewTopicSuggestions = async () => {
-    if (!apiKey) return;
+    if (!isConfigured) return;
     setIsSuggestingTopics(true);
     try {
       const existingTitles = slides.map(s => s.title);
-      const res = await ClientSideAiService.suggestTopics(apiKey, {
+      const res = await ClientSideAiService.suggestTopics(aiConfig, {
         topic,
         question: questionContext,
         existingTopics: [...existingTitles, ...usedTopics],
+        language,
+        audienceMode,
       });
 
       setNewTopicSuggestions(res.topics || []);
       onUpdate({ suggestedTopics: res.topics || [] });
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to suggest topics:', e);
+      toast({
+        title: 'Failed to Suggest Topics',
+        description: e?.message || 'Unable to retrieve new topic suggestions.',
+        variant: 'destructive',
+      });
     } finally {
       setIsSuggestingTopics(false);
     }
   };
 
   const handleAddSelectedSlides = async () => {
-    if (!apiKey) return;
+    if (!isConfigured) return;
     const topicsToAdd = [...selectedNewTopics];
     if (customTopic.trim() && !topicsToAdd.includes(customTopic.trim())) {
       topicsToAdd.push(customTopic.trim());
@@ -289,7 +308,9 @@ export function SlideEditor({
 
     setIsModifying(true);
     try {
-      const newSlidePromises = topicsToAdd.map(t => ClientSideAiService.generateSingleSlide(apiKey, t));
+      const newSlidePromises = topicsToAdd.map(t =>
+        ClientSideAiService.generateSingleSlide(aiConfig, t, { language, audienceMode })
+      );
       const generatedNewSlides = await Promise.all(newSlidePromises);
 
       const allSlides = [...slides, ...generatedNewSlides];
@@ -309,9 +330,13 @@ export function SlideEditor({
         title: 'Sections Added',
         description: `Added ${generatedNewSlides.length} new slides to the presentation.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to add slides:', error);
-      toast({ title: 'Error', description: 'Failed to generate new slides.', variant: 'destructive' });
+      toast({
+        title: 'Failed to Generate Slides',
+        description: error?.message || 'Error generating new slide sections.',
+        variant: 'destructive',
+      });
     } finally {
       setIsModifying(false);
     }

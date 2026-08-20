@@ -309,7 +309,7 @@ export const EnhancedSlideRenderer: React.FC<EnhancedSlideRendererProps> = ({
   onUpdateSlide,
 }) => {
   const { theme } = useTheme();
-  const { apiKey, language, audienceMode } = useSettings();
+  const { apiKey, aiConfig, isConfigured, language, audienceMode } = useSettings();
   const { toast } = useToast();
 
   const handleUpdateContentItem = (contentIndex: number, updatedItem: ContentItem) => {
@@ -333,11 +333,11 @@ export const EnhancedSlideRenderer: React.FC<EnhancedSlideRendererProps> = ({
 
   const handleAskSlideQuestion = async (questionText?: string) => {
     const q = (questionText || slideQuestion).trim();
-    if (!q || !apiKey || isAskingSlide) return;
+    if (!q || !isConfigured || isAskingSlide) return;
 
     setIsAskingSlide(true);
     try {
-      const response = await ClientSideAiService.answerSlideFollowUp(apiKey, {
+      const response = await ClientSideAiService.answerSlideFollowUp(aiConfig, {
         presentationTopic,
         slideTitle: slide.title,
         slideContent: slide.content,
@@ -350,9 +350,13 @@ export const EnhancedSlideRenderer: React.FC<EnhancedSlideRendererProps> = ({
       setSlideAnswers((prev) => [...prev, { q, a: response.answer, reasoning: response.reasoning }]);
       setSlideQuestion('');
       setShowSlideChat(true);
-    } catch (e) {
+    } catch (e: any) {
       console.error('Slide Q&A error:', e);
-      toast({ title: 'Error', description: 'Failed to answer slide question.', variant: 'destructive' });
+      toast({
+        title: 'Slide Q&A Error',
+        description: e?.message || 'Failed to answer slide question.',
+        variant: 'destructive',
+      });
     } finally {
       setIsAskingSlide(false);
     }
