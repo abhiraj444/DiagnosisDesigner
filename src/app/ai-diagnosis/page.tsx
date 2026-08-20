@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent, type ClipboardEvent, useEffect, Suspense } from 'react';
+import { useState, type ChangeEvent, type ClipboardEvent, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
